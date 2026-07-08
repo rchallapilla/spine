@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-bg: #0b1220;
+  --color-surface: #121b2e;
+  --color-line: #22304a;
+  --color-text: #ede9e0;
+  --color-text-dim: #8b96a8;
+  --color-accent: #2fd4b8;
+  --color-warn: #e8a13d;
+  --color-flare: #d96a5b;
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+:root {
+  --bg: #0b1220;
+  --surface: #121b2e;
+  --line: #22304a;
+  --text: #ede9e0;
+  --text-dim: #8b96a8;
+  --accent: #2fd4b8;
+  --warn: #e8a13d;
+  --flare: #d96a5b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.spine-segment-fill {
+  transition: background-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spine-segment-fill {
+    transition: none;
+  }
+}
