@@ -6,7 +6,13 @@ export default async function MilestonesPage() {
 
   return (
     <div className="space-y-4">
-      <h2 className="font-display text-xl font-semibold">Milestones</h2>
+      <div>
+        <h2 className="font-display text-xl font-semibold">Plan</h2>
+        <p className="text-sm text-text-dim">
+          The one-time checkpoints of your recovery. Tap a card to cycle its
+          status (to-do &rarr; scheduled &rarr; done).
+        </p>
+      </div>
       {milestones.length === 0 ? (
         <p className="text-sm text-text-dim">
           Milestones will appear after your first sign-in.

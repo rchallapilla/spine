@@ -68,36 +68,47 @@ export default async function TodayPage({
         date={selectedDate}
       />
 
-      <div className="flex gap-2">
-        <ScoreDial
-          label="Back"
-          value={scores.back}
-          min={1}
-          max={10}
-          date={selectedDate}
-          field="back"
-          scores={scores}
-        />
-        <ScoreDial
-          label="Stress"
-          value={scores.stress}
-          min={1}
-          max={10}
-          date={selectedDate}
-          field="stress"
-          scores={scores}
-        />
-        <ScoreDial
-          label="Sleep"
-          value={scores.sleep}
-          min={0}
-          max={14}
-          step={0.5}
-          unit="h"
-          date={selectedDate}
-          field="sleep"
-          scores={scores}
-        />
+      <div>
+        <p className="mb-1.5 text-xs text-text-dim">
+          Tonight&apos;s three numbers &mdash; tap to set each:
+        </p>
+        <div className="flex gap-2">
+          <ScoreDial
+            label="Back pain"
+            sublabel="1-10"
+            hint="How did your back feel today? 1 = felt nothing, 10 = worst imaginable."
+            value={scores.back}
+            min={1}
+            max={10}
+            date={selectedDate}
+            field="back"
+            scores={scores}
+          />
+          <ScoreDial
+            label="Stress"
+            sublabel="1-10"
+            hint="Overall life/work stress today. 1 = fully relaxed, 10 = maximum."
+            value={scores.stress}
+            min={1}
+            max={10}
+            date={selectedDate}
+            field="stress"
+            scores={scores}
+          />
+          <ScoreDial
+            label="Sleep"
+            sublabel="hours"
+            hint="Hours you actually slept last night. Target: 8.25h in bed."
+            value={scores.sleep}
+            min={0}
+            max={14}
+            step={0.5}
+            unit="h"
+            date={selectedDate}
+            field="sleep"
+            scores={scores}
+          />
+        </div>
       </div>
 
       <FlareButton />

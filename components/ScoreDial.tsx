@@ -15,6 +15,8 @@ import { Slider } from "@/components/ui/slider";
 
 type Props = {
   label: string;
+  sublabel?: string;
+  hint?: string;
   value: number | null;
   min: number;
   max: number;
@@ -31,6 +33,8 @@ type Props = {
 
 export function ScoreDial({
   label,
+  sublabel,
+  hint,
   value,
   min,
   max,
@@ -83,6 +87,9 @@ export function ScoreDial({
             {value ?? "—"}
             {value !== null && unit ? unit : ""}
           </span>
+          {sublabel && (
+            <span className="text-[10px] text-text-dim">{sublabel}</span>
+          )}
         </button>
       </DialogTrigger>
       <DialogContent>
@@ -90,6 +97,9 @@ export function ScoreDial({
           <DialogTitle>{label}</DialogTitle>
         </DialogHeader>
         <div className="space-y-6 py-4">
+          {hint && (
+            <p className="text-center text-sm text-text-dim">{hint}</p>
+          )}
           <div className="text-center font-display text-4xl">
             {local}
             {unit}

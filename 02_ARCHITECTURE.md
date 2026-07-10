@@ -16,6 +16,95 @@
 
 Explicitly rejected: FastAPI/Railway (second deploy for zero benefit at this scale), LangGraph (no multi-step agent workflows exist here; two single-call LLM jobs), Firebase (document store fights relational reporting).
 
+## 1a. System architecture
+
+> **Viewing this diagram:** Cursor's default markdown preview does not render Mermaid. Use one of:
+> - Install the **Markdown Preview Mermaid Support** extension, then reopen preview
+> - Paste the code block into [mermaid.live](https://mermaid.live)
+> - View this file on GitHub (renders Mermaid natively)
+
+```mermaid
+flowchart TB
+  subgraph client ["User device - Android Chrome PWA"]
+    PWA["Installed PWA"]
+    SW["Serwist service worker"]
+    IDB["IndexedDB offline queue"]
+    PWA --> SW
+    PWA --> IDB
+  end
+
+  subgraph github ["GitHub"]
+    Repo["spine repo"]
+  end
+
+  subgraph vercel ["Vercel"]
+    NextApp["Next.js 15 app"]
+    ServerActions["Server actions"]
+    ApiRoutes["API route handlers"]
+    Cron["Vercel Cron daily job"]
+    NextApp --> ServerActions
+    NextApp --> ApiRoutes
+    Cron --> ApiRoutes
+  end
+
+  subgraph supabase ["Supabase"]
+    Auth["Auth - magic link"]
+    PG["Postgres plus RLS"]
+    Auth --> PG
+  end
+
+  subgraph anthropic ["Anthropic API"]
+    Haiku["Haiku - quick-log parse"]
+    Sonnet["Sonnet - weekly coach"]
+  end
+
+  subgraph pushInfra ["Web Push - VAPID"]
+    PushGW["Browser push gateway"]
+  end
+
+  Repo -->|deploy| NextApp
+  PWA -->|HTTPS| NextApp
+  SW -->|precache| NextApp
+  NextApp -->|session plus RLS| Auth
+  ServerActions -->|read write| PG
+  ApiRoutes -->|push subs| PG
+  NextApp -->|signInWithOtp| Auth
+  Auth -->|magic link email| PWA
+  ApiRoutes -->|parse| Haiku
+  Haiku -->|preview only| PWA
+  PWA -->|confirm save| ServerActions
+  Cron -->|service role| PG
+  Cron -->|evening reminder| PushGW
+  Cron -->|Sunday aggregate| Sonnet
+  Sonnet -->|report| PG
+  Cron -->|Sunday push| PushGW
+  PushGW -->|tap opens app| PWA
+  ApiRoutes -->|generate now| Sonnet
+  IDB -->|replay on online| ServerActions
+```
+
+**How each service is used**
+
+| Service | Role in Spine |
+|---|---|
+| **GitHub** | Hosts the repo; pushes trigger Vercel builds and preview deploys. |
+| **Vercel** | Runs the Next.js app (UI, server actions, API routes, middleware). Hosts the single daily cron job. |
+| **Supabase Auth** | Magic-link login; session tied to `auth.users`. `ALLOWED_EMAILS` gates access in middleware. |
+| **Supabase Postgres** | All persistent data. RLS enforces per-user isolation on every table. |
+| **Anthropic (Haiku)** | Parses free-text quick-log into structured preview via forced tool use; never writes to DB. |
+| **Anthropic (Sonnet)** | Generates weekly coach markdown from 28 days of aggregated data; `RISK_FLAG` stored in `weekly_reports`. |
+| **VAPID / Web Push** | Evening and Sunday reminders. Subscriptions stored in Supabase; `web-push` sends from cron. |
+| **Serwist** | Service worker: app-shell precache, offline reads, push + notificationclick handlers. |
+| **IndexedDB** | Queues habit/score mutations offline; replays via server actions on reconnect. |
+
+**Credential boundaries**
+
+- **Browser / PWA:** publishable (anon) key + user session only.
+- **Server (actions, most routes):** publishable key + session; RLS applies.
+- **Cron + coach generation:** service role (secret) key only — never in client bundles.
+- **Anthropic API key:** server-only (`/api/quick-log/parse`, coach routes, cron Sunday branch).
+- **CRON_SECRET:** Vercel sends `Authorization: Bearer` on cron invocations; route returns 401 otherwise.
+
 ## 2. Data model (authoritative DDL in 03_schema.sql)
 
 - `profiles` 1:1 with auth.users; timezone, reminder prefs.

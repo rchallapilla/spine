@@ -16,6 +16,94 @@
 
 Explicitly rejected: FastAPI/Railway (second deploy for zero benefit at this scale), LangGraph (no multi-step agent workflows exist here; two single-call LLM jobs), Firebase (document store fights relational reporting).
 
+## 1a. System architecture
+
+> **Viewing this diagram:** Cursor's default markdown preview does not render Mermaid. Use one of:
+> - Install the **Markdown Preview Mermaid Support** extension, then reopen preview
+> - View this file on GitHub (renders Mermaid natively)
+
+```mermaid
+flowchart TB
+  subgraph client ["User device - Android Chrome PWA"]
+    PWA["Installed PWA"]
+    SW["Serwist service worker"]
+    IDB["IndexedDB offline queue"]
+    PWA --> SW
+    PWA --> IDB
+  end
+
+  subgraph github ["GitHub"]
+    Repo["spine repo"]
+  end
+
+  subgraph vercel ["Vercel"]
+    NextApp["Next.js 15 app"]
+    ServerActions["Server actions"]
+    ApiRoutes["API route handlers"]
+    Cron["Vercel Cron daily job"]
+    NextApp --> ServerActions
+    NextApp --> ApiRoutes
+    Cron --> ApiRoutes
+  end
+
+  subgraph supabase ["Supabase"]
+    Auth["Auth - magic link"]
+    PG["Postgres plus RLS"]
+    Auth --> PG
+  end
+
+  subgraph anthropic ["Anthropic API"]
+    Haiku["Haiku - quick-log parse"]
+    Sonnet["Sonnet - weekly coach"]
+  end
+
+  subgraph pushInfra ["Web Push - VAPID"]
+    PushGW["Browser push gateway"]
+  end
+
+  Repo -->|deploy| NextApp
+  PWA -->|HTTPS| NextApp
+  SW -->|precache| NextApp
+  NextApp -->|session plus RLS| Auth
+  ServerActions -->|read write| PG
+  ApiRoutes -->|push subs| PG
+  NextApp -->|signInWithOtp| Auth
+  Auth -->|magic link email| PWA
+  ApiRoutes -->|parse| Haiku
+  Haiku -->|preview only| PWA
+  PWA -->|confirm save| ServerActions
+  Cron -->|service role| PG
+  Cron -->|evening reminder| PushGW
+  Cron -->|Sunday aggregate| Sonnet
+  Sonnet -->|report| PG
+  Cron -->|Sunday push| PushGW
+  PushGW -->|tap opens app| PWA
+  ApiRoutes -->|generate now| Sonnet
+  IDB -->|replay on online| ServerActions
+```
+
+**How each service is used**
+
+| Service | Role in Spine |
+|---|---|
+| **GitHub** | Hosts the repo; pushes trigger Vercel builds and preview deploys. |
+| **Vercel** | Runs the Next.js app (UI, server actions, API routes, middleware). Hosts the single daily cron job. |
+| **Supabase Auth** | Magic-link login; session tied to `auth.users`. `ALLOWED_EMAILS` gates access in middleware. |
+| **Supabase Postgres** | All persistent data. RLS enforces per-user isolation on every table. |
+| **Anthropic (Haiku)** | Parses free-text quick-log into structured preview via forced tool use; never writes to DB. |
+| **Anthropic (Sonnet)** | Generates weekly coach markdown from 28 days of aggregated data; `RISK_FLAG` stored in `weekly_reports`. |
+| **VAPID / Web Push** | Evening and Sunday reminders. Subscriptions stored in Supabase; `web-push` sends from cron. |
+| **Serwist** | Service worker: app-shell precache, offline reads, push + notificationclick handlers. |
+| **IndexedDB** | Queues habit/score mutations offline; replays via server actions on reconnect. |
+
+**Credential boundaries**
+
+- **Browser / PWA:** publishable (anon) key + user session only.
+- **Server (actions, most routes):** publishable key + session; RLS applies.
+- **Cron + coach generation:** service role (secret) key only — never in client bundles.
+- **Anthropic API key:** server-only (`/api/quick-log/parse`, coach routes, cron Sunday branch).
+- **CRON_SECRET:** Vercel sends `Authorization: Bearer` on cron invocations; route returns 401 otherwise.
+
 ## 2. Data model (authoritative DDL in 03_schema.sql)
 
 - `profiles` 1:1 with auth.users; timezone, reminder prefs.
@@ -43,7 +131,16 @@ All tables RLS: `user_id = auth.uid()`. Service-role key used ONLY inside cron r
 - `POST /api/coach/generate-now` (rate limit 1/day) same generation path.
 
 ### Pages
-`/` Today, `/dashboard`, `/milestones`, `/coach`, `/flare` (modal route), `/login`.
+`/` Today, `/dashboard` (nav label "Trends"), `/guide`, `/milestones` (nav label "Plan"), `/coach`, `/flare` (modal route), `/login`.
+
+### In-app guide layer (July 2026 UI update)
+The original recovery document is fully embedded in the app so the user never needs to open it:
+
+- **`/guide` tab** — the whole guide restructured as collapsible sections: why the program, per-habit how-tos, self-tests + PT script, training phases 0-3, flare playbook, supplement verdicts, glossary, success definition. Deep-linkable via `?habit=<id>` or `?section=<id>` (target section auto-expands and scrolls).
+- **`lib/guideContent.ts`** — single source of truth for all guide copy (typed constants; no DB involvement).
+- **SpineWidget segments are labeled** — each shows the habit name + live status (checkmark or `2/3` count), with an ⓘ button opening a how-to dialog for that habit.
+- **Milestones link to instructions** — e.g. "Directional preference result recorded" links to the self-test how-to in the guide.
+- **Plain-language scores** — dials are "Back pain (1-10)", "Stress (1-10)", "Sleep (hours)" with scale anchors in the edit dialog; quick-log preview shows friendly habit names.
 
 ## 4. LLM integration pattern
 
@@ -62,6 +159,7 @@ app/
   (app)/            # authed group: layout with bottom tabs
     page.tsx        # Today
     dashboard/page.tsx
+    guide/page.tsx  # in-app recovery manual (deep-linkable)
     milestones/page.tsx
     coach/page.tsx
     flare/page.tsx  # modal route
@@ -72,12 +170,14 @@ app/
     cron/daily/route.ts
     coach/generate-now/route.ts
 components/
-  spine/SpineWidget.tsx   # signature component
+  spine/SpineWidget.tsx   # signature component (labeled segments + how-to dialogs)
+  GuideClient.tsx         # collapsible guide sections
   ScoreDial.tsx  QuickLogBox.tsx  FlareChecklist.tsx
   charts/TrendChart.tsx  AdherenceBars.tsx  FlareBand.tsx
 lib/
   supabase/ (client.ts, server.ts, middleware.ts)
   anthropic.ts  push.ts  dates.ts  schemas.ts (zod)
+  guideContent.ts  # all in-app guide copy (habit how-tos, glossary, phases...)
   prompts.ts    # constants copied verbatim from docs/06
 docs/             # PRD, ARCHITECTURE, llm prompts (kit files live here)
 public/           # manifest, icons, sw
@@ -99,7 +199,7 @@ radius: 10px; spacing base 4px; touch targets >= 48px
 motion: spine segment fill 150ms ease-out; nothing else animates
 ```
 
-The SpineWidget: 6 stacked rounded-rectangle "vertebrae" (wider middle, tapering top/bottom), gap 6px, unfilled = --surface with --line border, filled = --accent with subtle inner glow. Column height ~44vh on mobile. This is the only decorative element in the app; keep everything else austere.
+The SpineWidget: 6 stacked rounded-rectangle "vertebrae" (wider middle, tapering top/bottom), gap 6px, unfilled = --surface with --line border, filled = --accent with subtle inner glow. Each segment carries its habit label + live status (checkmark / `2/3` count) and a sibling ⓘ button that opens the habit's how-to dialog. This is the only decorative element in the app; keep everything else austere.
 
 ## 7. Offline strategy
 

@@ -6,6 +6,7 @@ import { saveQuickLog } from "@/app/actions/logging";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { QuickLogPayload } from "@/lib/schemas";
+import { HABIT_LABELS } from "@/lib/guideContent";
 
 type Props = {
   date: string;
@@ -54,11 +55,15 @@ export function QuickLogBox({ date, timezone }: Props) {
   }
 
   return (
-    <div className="space-y-3 rounded-[10px] border border-line bg-surface p-3">
+    <div className="space-y-2 rounded-[10px] border border-line bg-surface p-3">
+      <p className="text-xs text-text-dim">
+        Describe your day in plain words &mdash; it fills in everything below
+        for you. Or skip this and tap the rows directly.
+      </p>
       <Input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="walked 3x, big3 done, back 4, slept 7.5"
+        placeholder='e.g. "3 walks, did the big 3, back pain 4/10, slept 7.5h"'
         onKeyDown={(e) => e.key === "Enter" && handleParse()}
       />
       <Button
@@ -67,26 +72,31 @@ export function QuickLogBox({ date, timezone }: Props) {
         onClick={handleParse}
         disabled={loading || !text.trim()}
       >
-        {loading ? "Parsing..." : "Parse entry"}
+        {loading ? "Reading your entry..." : "Log my day"}
       </Button>
 
       {preview && (
         <div className="space-y-2 rounded-[10px] border border-line p-3 text-sm">
-          <p className="font-medium">Preview</p>
+          <p className="font-medium">Here&apos;s what I understood &mdash; confirm to save:</p>
           <ul className="space-y-1 text-text-dim">
             <li>Date: {preview.log_date}</li>
             {preview.back_score !== undefined && (
-              <li>Back: {preview.back_score}</li>
+              <li>Back pain: {preview.back_score}/10</li>
             )}
             {preview.stress_score !== undefined && (
-              <li>Stress: {preview.stress_score}</li>
+              <li>Stress: {preview.stress_score}/10</li>
             )}
             {preview.sleep_hours !== undefined && (
               <li>Sleep: {preview.sleep_hours}h</li>
             )}
             {preview.habits?.map((h) => (
               <li key={h.habit_id}>
-                {h.habit_id}: {h.value}
+                {HABIT_LABELS[h.habit_id] ?? h.habit_id}:{" "}
+                {h.habit_id === "walks"
+                  ? `${h.value}`
+                  : h.value >= 1
+                    ? "done"
+                    : "not done"}
               </li>
             ))}
             {preview.flare_started && <li>Flare started</li>}
