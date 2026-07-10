@@ -16,8 +16,15 @@ export default async function DashboardPage({
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="font-display text-xl font-semibold">Dashboard</h2>
+    <div className="space-y-5">
+      <div>
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
+          Patterns
+        </p>
+        <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
+          Trends
+        </h2>
+      </div>
       <DashboardClient data={{ ...data, rangeDays }} />
     </div>
   );

@@ -22,12 +22,14 @@ export default async function AppLayout({
   return (
     <OfflineProvider>
       <TimezoneSync />
-      <div className="mx-auto min-h-dvh max-w-lg pb-20">
-        <header className="flex items-center justify-between border-b border-line px-4 py-3">
-          <h1 className="font-display text-lg font-semibold">Spine</h1>
+      <div className="relative mx-auto min-h-dvh max-w-lg pb-24">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-line/70 bg-bg/80 px-4 py-3 backdrop-blur-md">
+          <h1 className="font-display text-lg font-semibold tracking-tight text-text">
+            Spine
+          </h1>
           <SettingsSheet />
         </header>
-        <main className="px-4 py-4">{children}</main>
+        <main className="px-4 py-5">{children}</main>
         <BottomNav />
       </div>
     </OfflineProvider>

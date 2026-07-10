@@ -36,14 +36,16 @@ export function DashboardClient({ data }: { data: DashboardData }) {
 
   return (
     <div className="space-y-6">
-      <div className="flex h-12 w-full items-center rounded-[10px] bg-surface p-1">
+      <div className="flex h-12 w-full items-center rounded-[12px] border border-line/70 bg-surface/80 p-1">
         {[7, 30, 90].map((d) => (
           <Link
             key={d}
             href={`/dashboard?range=${d}`}
             className={cn(
-              "flex min-h-10 flex-1 items-center justify-center rounded-[8px] text-sm font-medium",
-              d === range ? "bg-bg text-text" : "text-text-dim",
+              "flex min-h-10 flex-1 items-center justify-center rounded-[10px] text-sm font-medium transition-colors",
+              d === range
+                ? "bg-surface-2 text-text shadow-[inset_0_1px_0_rgba(242,239,230,0.05)]"
+                : "text-text-dim hover:text-text",
             )}
           >
             {d}d
@@ -87,7 +89,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
         />
       </section>
 
-      <section className="space-y-2 rounded-[10px] border border-line bg-surface p-4 text-sm">
+      <section className="space-y-2 rounded-[12px] border border-line/80 bg-surface/85 p-4 text-sm">
         <h3 className="font-display text-lg">This week vs last</h3>
         <p>Back: {delta("back_score") ?? "—"}</p>
         <p>Stress: {delta("stress_score") ?? "—"}</p>

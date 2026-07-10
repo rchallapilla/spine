@@ -50,7 +50,7 @@ export function FlareModeClient({ activeFlare }: { activeFlare: ActiveFlare }) {
   return (
     <div className="space-y-6 text-flare">
       {!activeFlare ? (
-        <section className="space-y-4 rounded-[10px] border border-flare bg-surface p-4">
+        <section className="space-y-4 rounded-[12px] border border-flare bg-surface p-4">
           <h3 className="font-display text-lg">Start flare</h3>
           <div className="space-y-2">
             <p className="text-sm">Severity: {severity}</p>
@@ -72,7 +72,7 @@ export function FlareModeClient({ activeFlare }: { activeFlare: ActiveFlare }) {
           </Button>
         </section>
       ) : (
-        <section className="space-y-4 rounded-[10px] border border-flare bg-surface p-4">
+        <section className="space-y-4 rounded-[12px] border border-flare bg-surface p-4">
           <p className="text-sm">
             Active flare since {activeFlare.started_on}
           </p>

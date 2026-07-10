@@ -55,10 +55,10 @@ export function QuickLogBox({ date, timezone }: Props) {
   }
 
   return (
-    <div className="space-y-2 rounded-[10px] border border-line bg-surface p-3">
-      <p className="text-xs text-text-dim">
-        Describe your day in plain words &mdash; it fills in everything below
-        for you. Or skip this and tap the rows directly.
+    <div className="space-y-2.5 rounded-[14px] border border-line/80 bg-surface/80 p-3.5 shadow-[inset_0_1px_0_rgba(242,239,230,0.03)]">
+      <p className="text-xs leading-relaxed text-text-dim">
+        Describe your day in plain words &mdash; it fills in everything below.
+        Or skip and tap the rows.
       </p>
       <Input
         value={text}
@@ -67,7 +67,7 @@ export function QuickLogBox({ date, timezone }: Props) {
         onKeyDown={(e) => e.key === "Enter" && handleParse()}
       />
       <Button
-        variant="secondary"
+        variant={text.trim() ? "default" : "secondary"}
         className="w-full"
         onClick={handleParse}
         disabled={loading || !text.trim()}
@@ -76,8 +76,10 @@ export function QuickLogBox({ date, timezone }: Props) {
       </Button>
 
       {preview && (
-        <div className="space-y-2 rounded-[10px] border border-line p-3 text-sm">
-          <p className="font-medium">Here&apos;s what I understood &mdash; confirm to save:</p>
+        <div className="space-y-2 rounded-[12px] border border-accent/30 bg-accent-dim/30 p-3 text-sm">
+          <p className="font-medium text-text">
+            Here&apos;s what I understood &mdash; confirm to save:
+          </p>
           <ul className="space-y-1 text-text-dim">
             <li>Date: {preview.log_date}</li>
             {preview.back_score !== undefined && (
@@ -104,7 +106,7 @@ export function QuickLogBox({ date, timezone }: Props) {
               <li>Notes: {preview.unparsed_notes}</li>
             )}
           </ul>
-          <div className="flex gap-2">
+          <div className="flex gap-2 pt-1">
             <Button
               variant="ghost"
               className="flex-1"

@@ -21,17 +21,17 @@ export function DateStrip({ dates, selected }: Props) {
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2">
+    <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
       {dates.map((date) => (
         <button
           key={date}
           type="button"
           onClick={() => selectDate(date)}
           className={cn(
-            "min-h-12 shrink-0 rounded-[10px] border px-3 py-2 text-xs",
+            "min-h-12 shrink-0 rounded-[12px] border px-3.5 py-2 text-xs font-medium tracking-tight transition-colors",
             date === selected
-              ? "border-accent text-accent"
-              : "border-line text-text-dim",
+              ? "border-accent/70 bg-accent-dim/40 text-accent"
+              : "border-line/80 bg-surface/50 text-text-dim hover:border-line hover:text-text",
           )}
         >
           {formatLogDate(date)}
@@ -45,7 +45,7 @@ export function FlareButton() {
   return (
     <Link
       href="/flare"
-      className="fixed bottom-20 right-4 z-30 flex min-h-12 items-center rounded-full border border-flare bg-surface px-4 text-sm text-flare"
+      className="fixed bottom-[5.5rem] right-4 z-30 flex min-h-12 items-center rounded-full border border-flare/70 bg-surface/95 px-4 text-sm font-medium text-flare shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-sm"
     >
       Flare
     </Link>

@@ -46,7 +46,7 @@ export function CoachClient({ reports }: { reports: Report[] }) {
           Your first weekly report will appear after enough logged days.
         </p>
       ) : (
-        <article className="space-y-3 rounded-[10px] border border-line bg-surface p-4">
+        <article className="space-y-3 rounded-[12px] border border-line bg-surface p-4">
           <div className="flex items-center justify-between gap-2">
             <h3 className="font-display text-lg">Week of {latest.week_start}</h3>
             {latest.risk_flag && (
@@ -75,7 +75,7 @@ export function CoachClient({ reports }: { reports: Report[] }) {
           {reports.slice(1).map((r) => (
             <details
               key={r.id}
-              className="rounded-[10px] border border-line bg-surface p-3 text-sm"
+              className="rounded-[12px] border border-line bg-surface p-3 text-sm"
             >
               <summary className="cursor-pointer font-medium">
                 Week of {r.week_start}

@@ -48,7 +48,7 @@ export function TrendChart({
 
   if (data.length === 0) {
     return (
-      <div className="flex min-h-48 items-center justify-center rounded-[10px] border border-line bg-surface p-6 text-sm text-text-dim">
+      <div className="flex min-h-48 items-center justify-center rounded-[12px] border border-line bg-surface p-6 text-sm text-text-dim">
         Log a few days to see trends here.
       </div>
     );

@@ -19,7 +19,7 @@ import {
 
 function MoveCard({ move }: { move: Move }) {
   return (
-    <div className="rounded-[10px] border border-line bg-bg p-3">
+    <div className="rounded-[12px] border border-line/80 bg-bg/70 p-3">
       <div className="flex items-baseline justify-between gap-2">
         <span className="font-medium">{move.name}</span>
       </div>
@@ -44,15 +44,15 @@ function HabitSection({ guide }: { guide: HabitGuide }) {
   return (
     <details
       id={`habit-${guide.habitId}`}
-      className="group rounded-[10px] border border-line bg-surface"
+      className="group rounded-[12px] border border-line/80 bg-surface/80"
     >
-      <summary className="cursor-pointer list-none p-3 font-medium marker:hidden [&::-webkit-details-marker]:hidden">
+      <summary className="cursor-pointer list-none p-3.5 font-medium marker:hidden [&::-webkit-details-marker]:hidden">
         <span className="mr-2 inline-block text-text-dim transition-transform group-open:rotate-90">
           &#9656;
         </span>
         {guide.title}
       </summary>
-      <div className="space-y-3 border-t border-line p-3">
+      <div className="space-y-3 border-t border-line/70 p-3.5">
         <p className="text-sm">{guide.what}</p>
         <p className="text-sm text-text-dim">{guide.why}</p>
         {guide.moves.map((m) => (
@@ -65,7 +65,7 @@ function HabitSection({ guide }: { guide: HabitGuide }) {
 
 function TestSection({ test }: { test: SelfTest }) {
   return (
-    <div className="rounded-[10px] border border-line bg-bg p-3">
+    <div className="rounded-[12px] border border-line/80 bg-bg/70 p-3.5">
       <span className="font-medium">{test.name}</span>
       <p className="mt-0.5 text-xs text-warn">{test.when}</p>
       <ol className="mt-2 list-decimal space-y-1 pl-4 text-sm text-text-dim">
@@ -96,15 +96,15 @@ function Section({
     <details
       id={id}
       open={defaultOpen}
-      className="group rounded-[10px] border border-line bg-surface"
+      className="group rounded-[14px] border border-line/80 bg-surface/85 shadow-[inset_0_1px_0_rgba(242,239,230,0.03)]"
     >
-      <summary className="cursor-pointer list-none p-4 font-display text-base font-semibold [&::-webkit-details-marker]:hidden">
+      <summary className="cursor-pointer list-none p-4 font-display text-base font-semibold tracking-tight [&::-webkit-details-marker]:hidden">
         <span className="mr-2 inline-block text-text-dim transition-transform group-open:rotate-90">
           &#9656;
         </span>
         {title}
       </summary>
-      <div className="space-y-3 border-t border-line p-4">{children}</div>
+      <div className="space-y-3 border-t border-line/70 p-4">{children}</div>
     </details>
   );
 }
@@ -141,12 +141,12 @@ export function GuideClient({
             {p}
           </p>
         ))}
-        <div className="rounded-[10px] border border-accent/40 bg-bg p-3 text-sm">
+        <div className="rounded-[12px] border border-accent/40 bg-bg p-3 text-sm">
           <span className="font-medium text-accent">The One Rule: </span>
           Protect against loaded and end-range forward bending short term.
           Rebuild confident bending gradually over months.
         </div>
-        <div className="rounded-[10px] border border-warn/40 bg-bg p-3 text-sm">
+        <div className="rounded-[12px] border border-warn/40 bg-bg p-3 text-sm">
           <span className="font-medium text-warn">The WIP limit: </span>
           recovery is your only side project until 2027. No new courses,
           certifications, or ventures. This matters as much as any exercise.
@@ -164,7 +164,7 @@ export function GuideClient({
       </Section>
 
       <Section id="self-tests" title="Self-tests &amp; the PT visit">
-        <div className="rounded-[10px] border border-line bg-bg p-3 text-sm">
+        <div className="rounded-[12px] border border-line bg-bg p-3 text-sm">
           <p className="font-medium">What to say when booking the PT:</p>
           <p className="mt-1 italic text-text-dim">{PT_SCRIPT.script}</p>
           <p className="mt-2 text-text-dim">
@@ -179,7 +179,7 @@ export function GuideClient({
 
       <Section id="training" title="Training plan (phases 0-3)">
         {PHASES.map((phase) => (
-          <div key={phase.id} className="rounded-[10px] border border-line bg-bg p-3">
+          <div key={phase.id} className="rounded-[12px] border border-line bg-bg p-3">
             <p className="font-medium">{phase.title}</p>
             <ul className="mt-2 list-disc space-y-1 pl-4 text-sm text-text-dim">
               {phase.items.map((i) => (
@@ -188,7 +188,7 @@ export function GuideClient({
             </ul>
           </div>
         ))}
-        <div className="rounded-[10px] border border-line bg-bg p-3 text-sm">
+        <div className="rounded-[12px] border border-line bg-bg p-3 text-sm">
           <p className="font-medium">Gym quick reference</p>
           <p className="mt-2">
             <span className="text-accent">Do now: </span>
@@ -215,7 +215,7 @@ export function GuideClient({
         </ol>
         <p className="text-sm text-text-dim">{FLARE_GUIDE.stressLag}</p>
         <p className="text-sm text-text-dim">{FLARE_GUIDE.relapseScript}</p>
-        <div className="rounded-[10px] border border-flare/50 bg-bg p-3 text-sm">
+        <div className="rounded-[12px] border border-flare/50 bg-bg p-3 text-sm">
           <p className="font-medium text-flare">ER now (rare, NEW symptoms only):</p>
           <ul className="mt-1 list-disc space-y-1 pl-4 text-text-dim">
             {FLARE_GUIDE.erFlags.map((f) => (
@@ -229,7 +229,7 @@ export function GuideClient({
       <Section id="supplements" title="Supplements &amp; gadgets (final verdicts)">
         <div className="space-y-2">
           {SUPPLEMENTS.map((s) => (
-            <div key={s.item} className="rounded-[10px] border border-line bg-bg p-3 text-sm">
+            <div key={s.item} className="rounded-[12px] border border-line bg-bg p-3 text-sm">
               <div className="flex items-baseline justify-between gap-2">
                 <span className="font-medium">{s.item}</span>
                 <span className="shrink-0 text-xs uppercase text-accent">{s.verdict}</span>
@@ -243,7 +243,7 @@ export function GuideClient({
       <Section id="glossary" title="Glossary: every term in this app">
         <div className="space-y-2">
           {GLOSSARY.map((g) => (
-            <div key={g.term} className="rounded-[10px] border border-line bg-bg p-3 text-sm">
+            <div key={g.term} className="rounded-[12px] border border-line bg-bg p-3 text-sm">
               <p className="font-medium">{g.term}</p>
               <p className="mt-1 text-text-dim">{g.def}</p>
             </div>

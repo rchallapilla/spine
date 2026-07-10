@@ -186,20 +186,23 @@ public/           # manifest, icons, sw
 ## 6. Design tokens (from PRD section 7; implement as CSS vars + Tailwind theme)
 
 ```
---bg:        #0B1220   (ink night)
---surface:   #121B2E
---line:      #22304A
---text:      #EDE9E0   (bone)
---text-dim:  #8B96A8
---accent:    #2FD4B8   (recovery teal: completed states, spine fill)
---warn:      #E8A13D   (amber: risk flags only)
---flare:     #D96A5B   (muted red: Flare Mode only)
+--bg:         #070D18   (deeper ink night)
+--surface:    #101929
+--surface-2:  #162235   (interactive / elevated)
+--line:       #2A3A52
+--text:       #F2EFE6   (bone)
+--text-dim:   #8A96A9
+--accent:     #3ECFBA   (recovery teal: completed states, spine fill)
+--accent-dim: #1A4A45
+--warn:       #E8A13D   (amber: risk flags only)
+--flare:      #D96A5B   (muted red: Flare Mode only)
 fonts: display "Space Grotesk"; body "IBM Plex Sans"; mono "IBM Plex Mono"
-radius: 10px; spacing base 4px; touch targets >= 48px
-motion: spine segment fill 150ms ease-out; nothing else animates
+radius: 12px; spacing base 4px; touch targets >= 48px
+atmosphere: fixed radial teal wash at top + deep blue wash at bottom (CSS only)
+motion: spine segment fill 160ms; nav underline 180ms; sheet enter 200ms; respect prefers-reduced-motion
 ```
 
-The SpineWidget: 6 stacked rounded-rectangle "vertebrae" (wider middle, tapering top/bottom), gap 6px, unfilled = --surface with --line border, filled = --accent with subtle inner glow. Each segment carries its habit label + live status (checkmark / `2/3` count) and a sibling ⓘ button that opens the habit's how-to dialog. This is the only decorative element in the app; keep everything else austere.
+The SpineWidget: 6 stacked rounded-rectangle "vertebrae" (wider middle, tapering top/bottom) inside a soft surface panel with a completion counter. Unfilled = --surface-2 with --line border; filled = --accent with a soft inner highlight (not neon glow). Each segment carries its habit label + live status and a sibling ⓘ how-to button. This remains the only signature decorative element.
 
 ## 7. Offline strategy
 

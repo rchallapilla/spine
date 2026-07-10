@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 
 type Props = {
   label: string;
@@ -80,15 +81,24 @@ export function ScoreDial({
       <DialogTrigger asChild>
         <button
           type="button"
-          className="flex min-h-20 flex-1 flex-col items-center justify-center rounded-[10px] border border-line bg-surface p-3"
+          className={cn(
+            "flex min-h-[5.5rem] flex-1 flex-col items-center justify-center rounded-[12px] border p-3 transition-colors",
+            value !== null
+              ? "border-accent/35 bg-surface-2 shadow-[inset_0_1px_0_rgba(242,239,230,0.04)]"
+              : "border-line bg-surface hover:border-line hover:bg-surface-2",
+          )}
         >
-          <span className="text-xs text-text-dim">{label}</span>
-          <span className="font-display text-2xl font-semibold">
+          <span className="text-[11px] uppercase tracking-[0.06em] text-text-dim">
+            {label}
+          </span>
+          <span className="mt-1 font-display text-2xl font-semibold tracking-tight">
             {value ?? "—"}
-            {value !== null && unit ? unit : ""}
+            {value !== null && unit ? (
+              <span className="text-base text-text-dim">{unit}</span>
+            ) : null}
           </span>
           {sublabel && (
-            <span className="text-[10px] text-text-dim">{sublabel}</span>
+            <span className="mt-0.5 text-[10px] text-text-dim">{sublabel}</span>
           )}
         </button>
       </DialogTrigger>
@@ -97,10 +107,8 @@ export function ScoreDial({
           <DialogTitle>{label}</DialogTitle>
         </DialogHeader>
         <div className="space-y-6 py-4">
-          {hint && (
-            <p className="text-center text-sm text-text-dim">{hint}</p>
-          )}
-          <div className="text-center font-display text-4xl">
+          {hint && <p className="text-center text-sm text-text-dim">{hint}</p>}
+          <div className="text-center font-display text-4xl tracking-tight">
             {local}
             {unit}
           </div>
@@ -112,7 +120,7 @@ export function ScoreDial({
             onValueChange={([v]) => setLocal(v)}
           />
           <Button onClick={handleSave} disabled={saving} className="w-full">
-            {saving ? "Saving..." : "Save day"}
+            {saving ? "Saving..." : "Save"}
           </Button>
         </div>
       </DialogContent>

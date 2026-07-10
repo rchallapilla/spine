@@ -83,7 +83,7 @@ export function MilestonesList({ milestones }: { milestones: Milestone[] }) {
               {group.map((m) => (
                 <div
                   key={m.id}
-                  className="rounded-[10px] border border-line bg-surface p-3"
+                  className="rounded-[12px] border border-line/80 bg-surface/85 p-3.5 shadow-[inset_0_1px_0_rgba(242,239,230,0.03)]"
                   onContextMenu={(e) => {
                     e.preventDefault();
                     void skip(m);

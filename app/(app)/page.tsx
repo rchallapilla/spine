@@ -39,24 +39,29 @@ export default async function TodayPage({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-baseline justify-between">
-        <div>
-          <h2 className="font-display text-xl font-semibold">Today</h2>
-          <p className="text-sm text-text-dim">{streak} day streak</p>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
+          Daily floor
+        </p>
+        <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
+          Today
+        </h2>
+        <p className="mt-1 text-sm text-text-dim">
+          <span className="font-mono text-accent">{streak}</span> day streak
+        </p>
       </div>
 
       {activeFlare && (
         <Link
           href="/flare"
-          className="block rounded-[10px] border border-flare bg-surface p-3 text-sm text-flare"
+          className="block rounded-[12px] border border-flare/60 bg-flare/10 p-3.5 text-sm text-flare"
         >
           Active flare since {activeFlare.started_on}. Tap to manage.
         </Link>
       )}
 
-      <Suspense fallback={<div className="h-10" />}>
+      <Suspense fallback={<div className="h-12" />}>
         <DateStrip dates={dates} selected={selectedDate} />
       </Suspense>
 
@@ -69,10 +74,10 @@ export default async function TodayPage({
       />
 
       <div>
-        <p className="mb-1.5 text-xs text-text-dim">
-          Tonight&apos;s three numbers &mdash; tap to set each:
+        <p className="mb-2 text-xs font-medium uppercase tracking-[0.08em] text-text-dim">
+          Tonight&apos;s three numbers
         </p>
-        <div className="flex gap-2">
+        <div className="flex gap-2.5">
           <ScoreDial
             label="Back pain"
             sublabel="1-10"
