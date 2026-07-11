@@ -14,8 +14,8 @@ export default async function MilestonesPage() {
           Plan
         </h2>
         <p className="mt-1 text-sm text-text-dim">
-          One-time recovery checkpoints. Tap a card to cycle status (to-do
-          &rarr; scheduled &rarr; done).
+          One-time recovery checkpoints. See done vs pending at the top; tap a
+          card when you complete one.
         </p>
       </div>
       {milestones.length === 0 ? (

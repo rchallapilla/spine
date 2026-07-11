@@ -14,6 +14,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { MoveGuideCard } from "@/components/MoveGuideCard";
 
 type Props = {
   habits: HabitDefinition[];
@@ -211,25 +212,7 @@ export function SpineWidget({ habits, entries, date }: Props) {
               <p>{infoGuide.what}</p>
               <p className="text-text-dim">{infoGuide.why}</p>
               {infoGuide.moves.map((move) => (
-                <div
-                  key={move.id}
-                  className="rounded-[12px] border border-line bg-bg/70 p-3"
-                >
-                  <p className="font-medium">{move.name}</p>
-                  <p className="mt-0.5 text-xs text-accent">{move.dose}</p>
-                  <ol className="mt-2 list-decimal space-y-1 pl-4 text-text-dim">
-                    {move.steps.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ol>
-                  {move.avoid && (
-                    <ul className="mt-2 space-y-1 text-warn">
-                      {move.avoid.map((a) => (
-                        <li key={a}>Watch out: {a}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
+                <MoveGuideCard key={move.id} move={move} />
               ))}
               <Link
                 href={`/guide?habit=${infoHabit?.id}`}

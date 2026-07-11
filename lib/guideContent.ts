@@ -7,6 +7,8 @@ export type Move = {
   dose: string;
   steps: string[];
   avoid?: string[];
+  videoUrl?: string;
+  videoLabel?: string;
 };
 
 export type HabitGuide = {
@@ -132,6 +134,8 @@ export const HABIT_GUIDES: HabitGuide[] = [
           "Stay tall through the chest and slowly rotate both knees together to the other side.",
           "Pause where it is hard; do not force. 10 controlled switches.",
         ],
+        videoUrl: "https://www.youtube.com/watch?v=-cQqV5q52FQ",
+        videoLabel: "Watch: 90/90 hip switches (PT demo)",
       },
       {
         id: "couch-stretch",
@@ -143,6 +147,8 @@ export const HABIT_GUIDES: HabitGuide[] = [
           "Stay upright and breathe for 60 seconds, then switch.",
         ],
         avoid: ["Arching the lower back to fake the range. The pelvic tuck is the whole exercise."],
+        videoUrl: "https://www.youtube.com/watch?v=ulgAOykAgV4",
+        videoLabel: "Watch: couch stretch (Kelly Starrett)",
       },
       {
         id: "goblet-hold",
@@ -153,6 +159,8 @@ export const HABIT_GUIDES: HabitGuide[] = [
           "Squat down to a COMFORTABLE depth only, heels down, chest tall.",
           "Use your elbows to gently push your knees out. Breathe and hold 20 seconds.",
         ],
+        videoUrl: "https://www.youtube.com/watch?v=28YoUHBMCyA",
+        videoLabel: "Watch: prying goblet squat hold",
       },
     ],
   },

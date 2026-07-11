@@ -13,32 +13,9 @@ import {
   SUCCESS_DEFINITION,
   SUPPLEMENTS,
   type HabitGuide,
-  type Move,
   type SelfTest,
 } from "@/lib/guideContent";
-
-function MoveCard({ move }: { move: Move }) {
-  return (
-    <div className="rounded-[12px] border border-line/80 bg-bg/70 p-3">
-      <div className="flex items-baseline justify-between gap-2">
-        <span className="font-medium">{move.name}</span>
-      </div>
-      <p className="mt-0.5 text-xs text-accent">{move.dose}</p>
-      <ol className="mt-2 list-decimal space-y-1 pl-4 text-sm text-text-dim">
-        {move.steps.map((s) => (
-          <li key={s}>{s}</li>
-        ))}
-      </ol>
-      {move.avoid && (
-        <ul className="mt-2 space-y-1 text-sm text-warn">
-          {move.avoid.map((a) => (
-            <li key={a}>Watch out: {a}</li>
-          ))}
-        </ul>
-      )}
-    </div>
-  );
-}
+import { MoveGuideCard } from "@/components/MoveGuideCard";
 
 function HabitSection({ guide }: { guide: HabitGuide }) {
   return (
@@ -56,7 +33,7 @@ function HabitSection({ guide }: { guide: HabitGuide }) {
         <p className="text-sm">{guide.what}</p>
         <p className="text-sm text-text-dim">{guide.why}</p>
         {guide.moves.map((m) => (
-          <MoveCard key={m.id} move={m} />
+          <MoveGuideCard key={m.id} move={m} />
         ))}
       </div>
     </details>
