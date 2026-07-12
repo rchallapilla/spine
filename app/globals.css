@@ -1,17 +1,20 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* "Lamplight ledger": warm ink, candle gold, cream text.
+   The app is used at night before bed; it should feel like a journal
+   under a warm lamp, not a monitoring console. */
 @theme {
-  --color-bg: #070d18;
-  --color-surface: #101929;
-  --color-surface-2: #162235;
-  --color-line: #2a3a52;
-  --color-text: #f2efe6;
-  --color-text-dim: #8a96a9;
-  --color-accent: #3ecfba;
-  --color-accent-dim: #1a4a45;
-  --color-warn: #e8a13d;
-  --color-flare: #d96a5b;
+  --color-bg: #171310;
+  --color-surface: #211b16;
+  --color-surface-2: #2b231c;
+  --color-line: #43372c;
+  --color-text: #f3ebdd;
+  --color-text-dim: #a79883;
+  --color-accent: #e3a857;
+  --color-accent-dim: #453317;
+  --color-warn: #c9773b;
+  --color-flare: #d9605b;
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
@@ -19,17 +22,17 @@
 }
 
 :root {
-  --bg: #070d18;
-  --surface: #101929;
-  --surface-2: #162235;
-  --line: #2a3a52;
-  --text: #f2efe6;
-  --text-dim: #8a96a9;
-  --accent: #3ecfba;
-  --accent-dim: #1a4a45;
-  --warn: #e8a13d;
-  --flare: #d96a5b;
-  --radius: 12px;
+  --bg: #171310;
+  --surface: #211b16;
+  --surface-2: #2b231c;
+  --line: #43372c;
+  --text: #f3ebdd;
+  --text-dim: #a79883;
+  --accent: #e3a857;
+  --accent-dim: #453317;
+  --warn: #c9773b;
+  --flare: #d9605b;
+  --radius: 14px;
 }
 
 * {
@@ -72,16 +75,17 @@ h3 {
 body {
   background-color: var(--bg);
   color: var(--text);
+  /* Lamplight falling from the upper left, warmth pooling at the base. */
   background-image:
     radial-gradient(
-      ellipse 90% 55% at 50% -8%,
-      rgba(62, 207, 186, 0.09),
+      ellipse 85% 50% at 30% -10%,
+      rgba(227, 168, 87, 0.1),
       transparent 55%
     ),
     radial-gradient(
-      ellipse 70% 40% at 100% 100%,
-      rgba(22, 58, 90, 0.35),
-      transparent 50%
+      ellipse 75% 45% at 100% 105%,
+      rgba(87, 52, 28, 0.32),
+      transparent 55%
     );
   background-attachment: fixed;
 }
@@ -165,8 +169,8 @@ body {
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(62, 207, 186, 0.22) 45%,
-    rgba(62, 207, 186, 0.08) 55%,
+    rgba(227, 168, 87, 0.26) 45%,
+    rgba(227, 168, 87, 0.1) 55%,
     transparent 100%
   );
   transform: translateY(-100%);

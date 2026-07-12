@@ -4,8 +4,8 @@
   "description": "Personal recovery tracking PWA",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0B1220",
-  "theme_color": "#0B1220",
+  "background_color": "#171310",
+  "theme_color": "#171310",
   "orientation": "portrait",
   "icons": [
     {

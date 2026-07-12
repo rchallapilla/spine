@@ -26,7 +26,7 @@ export default function PreviewPage() {
   return (
     <div className="mx-auto max-w-lg space-y-8 px-4 py-6 pb-24">
       <header className="border-b border-line/70 pb-3">
-        <h1 className="font-display text-lg font-semibold tracking-tight">Spine</h1>
+        <h1 className="font-display text-xl font-medium italic">Spine</h1>
       </header>
       <section className="space-y-6">
         <div className="flex items-end justify-between gap-3">
@@ -34,7 +34,7 @@ export default function PreviewPage() {
             <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
               Fri Jul 10
             </p>
-            <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
+            <h2 className="mt-1 font-display text-3xl font-medium italic">
               Good evening
             </h2>
           </div>

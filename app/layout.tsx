@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans, Space_Grotesk } from "next/font/google";
+import { Fraunces, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
+const fraunces = Fraunces({
   subsets: ["latin"],
+  style: ["normal", "italic"],
   variable: "--font-display",
+  axes: ["SOFT", "opsz"],
 });
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070d18",
+  themeColor: "#171310",
   width: "device-width",
   initialScale: 1,
 };
@@ -49,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} dark`}
+      className={`${fraunces.variable} ${ibmPlexSans.variable} ${ibmPlexMono.variable} dark`}
     >
       <body className="min-h-dvh bg-bg text-text font-body antialiased">
         {children}

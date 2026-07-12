@@ -11,17 +11,17 @@ export default async function LoginPage({
     <div className="relative mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-4">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(62,207,186,0.14),transparent_65%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_top,rgba(227,168,87,0.14),transparent_65%)]"
       />
       <div className="relative mb-10 text-center">
         <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-accent/80">
-          Recovery companion
+          Your nightly ledger
         </p>
-        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight">
+        <h1 className="mt-2 font-display text-5xl font-medium italic">
           Spine
         </h1>
         <p className="mt-3 text-sm text-text-dim">
-          Sign in to your recovery tracker
+          Sign in and log the day
         </p>
       </div>
       {error === "unauthorized" && (

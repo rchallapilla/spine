@@ -45,7 +45,7 @@ export default async function TodayPage({
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
             {formatLogDate(today)}
           </p>
-          <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
+          <h2 className="mt-1 font-display text-3xl font-medium italic">
             {getGreeting(timezone)}
           </h2>
         </div>
