@@ -70,3 +70,11 @@ export function isEveningReminderWindow(timezone: string): boolean {
 export function addDaysToDate(date: string, count: number): string {
   return format(addDays(parseISO(date), count), "yyyy-MM-dd");
 }
+
+export function getGreeting(timezone: string): string {
+  const hour = Number(formatInTimeZone(new Date(), timezone, "H"));
+  if (hour < 5) return "Still up";
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}

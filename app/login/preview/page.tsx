@@ -29,21 +29,30 @@ export default function PreviewPage() {
         <h1 className="font-display text-lg font-semibold tracking-tight">Spine</h1>
       </header>
       <section className="space-y-6">
-        <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
-            Daily floor
-          </p>
-          <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
-            Today
-          </h2>
-          <p className="mt-1 text-sm text-text-dim">
-            <span className="font-mono text-accent">3</span> day streak
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
+              Fri Jul 10
+            </p>
+            <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
+              Good evening
+            </h2>
+          </div>
+          <p className="shrink-0 rounded-full border border-accent/50 bg-accent-dim/30 px-3 py-1.5 text-xs font-medium tabular-nums text-accent">
+            <span className="font-mono text-sm text-accent">8</span>
+            {" day streak"}
           </p>
         </div>
         <QuickLogBox date="2026-07-10" timezone="America/New_York" />
         <SpineWidget
           habits={HABITS}
-          entries={{ sleep_window: 1, walks: 2, mcgill_big3: 1 }}
+          entries={{
+            sleep_window: 1,
+            walks: 3,
+            mcgill_big3: 1,
+            hip_openers: 1,
+            sit_stand: 1,
+          }}
           date="2026-07-10"
         />
         <div>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { formatLogDate } from "@/lib/dates";
 
@@ -11,33 +11,35 @@ type Props = {
 };
 
 export function DateStrip({ dates, selected }: Props) {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
-  function selectDate(date: string) {
+  function hrefFor(date: string) {
     const params = new URLSearchParams(searchParams.toString());
     params.set("date", date);
-    router.push(`/?${params.toString()}`);
+    return `/?${params.toString()}`;
   }
 
   return (
-    <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+    <nav
+      aria-label="Pick a day to log"
+      className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1"
+    >
       {dates.map((date) => (
-        <button
+        <Link
           key={date}
-          type="button"
-          onClick={() => selectDate(date)}
+          href={hrefFor(date)}
+          aria-current={date === selected ? "date" : undefined}
           className={cn(
-            "min-h-12 shrink-0 rounded-[12px] border px-3.5 py-2 text-xs font-medium tracking-tight transition-colors",
+            "flex min-h-12 shrink-0 items-center rounded-[12px] border px-3.5 py-2 text-xs font-medium tracking-tight transition-colors",
             date === selected
               ? "border-accent/70 bg-accent-dim/40 text-accent"
               : "border-line/80 bg-surface/50 text-text-dim hover:border-line hover:text-text",
           )}
         >
           {formatLogDate(date)}
-        </button>
+        </Link>
       ))}
-    </div>
+    </nav>
   );
 }
 

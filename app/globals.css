@@ -36,10 +36,37 @@
   box-sizing: border-box;
 }
 
+html {
+  color-scheme: dark;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
+}
+
+button,
+a,
+input,
+select,
+textarea,
+summary,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+summary:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }
 
 body {
@@ -127,6 +154,44 @@ body {
   to {
     opacity: 1;
     transform: scaleX(1);
+  }
+}
+
+/* Signature moment: when the sixth segment fills, a soft light sweeps
+   down the spine. Overlay starts invisible; with animations disabled
+   (reduced motion) it simply never appears. */
+.spine-align-sweep {
+  opacity: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(62, 207, 186, 0.22) 45%,
+    rgba(62, 207, 186, 0.08) 55%,
+    transparent 100%
+  );
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spine-align-sweep {
+    animation: align-sweep 1100ms ease-in-out forwards;
+  }
+}
+
+@keyframes align-sweep {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100%);
   }
 }
 

@@ -108,7 +108,10 @@ export function ScoreDial({
         </DialogHeader>
         <div className="space-y-6 py-4">
           {hint && <p className="text-center text-sm text-text-dim">{hint}</p>}
-          <div className="text-center font-display text-4xl tracking-tight">
+          <div
+            aria-live="polite"
+            className="text-center font-display text-4xl tabular-nums tracking-tight"
+          >
             {local}
             {unit}
           </div>
@@ -118,9 +121,10 @@ export function ScoreDial({
             step={step}
             value={[local]}
             onValueChange={([v]) => setLocal(v)}
+            aria-label={label}
           />
           <Button onClick={handleSave} disabled={saving} className="w-full">
-            {saving ? "Saving..." : "Save"}
+            {saving ? "Saving\u2026" : `Save ${label.toLowerCase()}`}
           </Button>
         </div>
       </DialogContent>

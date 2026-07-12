@@ -46,7 +46,7 @@ export function SettingsSheet() {
             onClick={handleEnableReminders}
             disabled={pushLoading}
           >
-            {pushLoading ? "Enabling..." : "Enable reminders"}
+            {pushLoading ? "Enabling\u2026" : "Enable reminders"}
           </Button>
           <form action={signOut}>
             <Button variant="ghost" className="w-full" type="submit">

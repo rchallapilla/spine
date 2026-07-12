@@ -122,7 +122,7 @@ export function MilestonesList({ milestones }: { milestones: Milestone[] }) {
 
       <p className="text-xs text-text-dim">
         Tap a card to cycle: To do &rarr; Scheduled &rarr; Done. The date field
-        is only when you plan to do it — it does not mark it complete.
+        is only when you plan to do it &mdash; it does not mark it complete.
       </p>
 
       {CATEGORIES.map((cat) => {
@@ -142,10 +142,6 @@ export function MilestonesList({ milestones }: { milestones: Milestone[] }) {
                         ? "border-line/50 bg-surface/50 opacity-70"
                         : "border-line/80 bg-surface/85"
                   }`}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    void skip(m);
-                  }}
                 >
                   <button
                     type="button"
@@ -186,16 +182,32 @@ export function MilestonesList({ milestones }: { milestones: Milestone[] }) {
                       </Link>
                     ) : null;
                   })()}
-                  <div className="mt-2">
-                    <label className="mb-1 block text-[11px] uppercase tracking-wide text-text-dim">
-                      Target date (planned)
-                    </label>
-                    <Input
-                      type="date"
-                      value={m.target_date ?? ""}
-                      onChange={(e) => setTargetDate(m, e.target.value)}
-                      className="text-sm"
-                    />
+                  <div className="mt-2 flex items-end gap-2">
+                    <div className="min-w-0 flex-1">
+                      <label
+                        htmlFor={`target-${m.id}`}
+                        className="mb-1 block text-[11px] uppercase tracking-wide text-text-dim"
+                      >
+                        Target date (planned)
+                      </label>
+                      <Input
+                        id={`target-${m.id}`}
+                        name={`target-${m.id}`}
+                        type="date"
+                        value={m.target_date ?? ""}
+                        onChange={(e) => setTargetDate(m, e.target.value)}
+                        className="text-sm"
+                      />
+                    </div>
+                    {m.status !== "skipped" && m.status !== "done" && (
+                      <button
+                        type="button"
+                        onClick={() => skip(m)}
+                        className="min-h-12 shrink-0 rounded-[12px] border border-line/80 px-3 text-xs font-medium text-text-dim transition-colors hover:border-line hover:text-text"
+                      >
+                        Skip this
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

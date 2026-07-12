@@ -31,7 +31,43 @@ export function DashboardClient({ data }: { data: DashboardData }) {
     const tw = avg(thisWeekLogs, key);
     const lw = avg(lastWeekLogs, key);
     if (tw === null || lw === null) return null;
-    return (tw - lw).toFixed(1);
+    return tw - lw;
+  };
+
+  // For back and stress, down is good; for sleep, up is good.
+  const deltaRow = (
+    label: string,
+    key: "back_score" | "stress_score" | "sleep_hours",
+    upIsGood: boolean,
+    unit = "",
+  ) => {
+    const d = delta(key);
+    if (d === null) {
+      return (
+        <p key={label} className="flex justify-between text-text-dim">
+          <span>{label}</span>
+          <span>Not enough data yet</span>
+        </p>
+      );
+    }
+    const flat = Math.abs(d) < 0.05;
+    const good = upIsGood ? d > 0 : d < 0;
+    const arrow = flat ? "\u2192" : d > 0 ? "\u2191" : "\u2193";
+    const word = flat ? "steady" : good ? "better" : "watch";
+    return (
+      <p key={label} className="flex justify-between">
+        <span>{label}</span>
+        <span
+          className={`tabular-nums ${
+            flat ? "text-text-dim" : good ? "text-accent" : "text-warn"
+          }`}
+        >
+          {arrow} {d > 0 ? "+" : ""}
+          {d.toFixed(1)}
+          {unit} · {word}
+        </span>
+      </p>
+    );
   };
 
   return (
@@ -41,6 +77,7 @@ export function DashboardClient({ data }: { data: DashboardData }) {
           <Link
             key={d}
             href={`/dashboard?range=${d}`}
+            aria-current={d === range ? "true" : undefined}
             className={cn(
               "flex min-h-10 flex-1 items-center justify-center rounded-[10px] text-sm font-medium transition-colors",
               d === range
@@ -64,8 +101,9 @@ export function DashboardClient({ data }: { data: DashboardData }) {
             <button
               key={label as string}
               type="button"
+              aria-pressed={on as boolean}
               onClick={() => (setOn as (v: boolean) => void)(!(on as boolean))}
-              className={`rounded-full border px-3 py-1 ${on ? "border-accent text-accent" : "border-line text-text-dim"}`}
+              className={`min-h-9 rounded-full border px-3 py-1 transition-colors ${on ? "border-accent text-accent" : "border-line text-text-dim hover:text-text"}`}
             >
               {label as string}
             </button>
@@ -91,9 +129,9 @@ export function DashboardClient({ data }: { data: DashboardData }) {
 
       <section className="space-y-2 rounded-[12px] border border-line/80 bg-surface/85 p-4 text-sm">
         <h3 className="font-display text-lg">This week vs last</h3>
-        <p>Back: {delta("back_score") ?? "—"}</p>
-        <p>Stress: {delta("stress_score") ?? "—"}</p>
-        <p>Sleep: {delta("sleep_hours") ?? "—"}</p>
+        {deltaRow("Back", "back_score", false)}
+        {deltaRow("Stress", "stress_score", false)}
+        {deltaRow("Sleep", "sleep_hours", true, "h")}
       </section>
     </div>
   );

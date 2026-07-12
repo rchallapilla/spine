@@ -11,7 +11,7 @@ import {
   getHabitDefinitions,
   getProfile,
 } from "@/lib/queries";
-import { getDateStrip, getTodayInTimezone } from "@/lib/dates";
+import { formatLogDate, getDateStrip, getGreeting, getTodayInTimezone } from "@/lib/dates";
 
 export default async function TodayPage({
   searchParams,
@@ -40,15 +40,24 @@ export default async function TodayPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
-          Daily floor
-        </p>
-        <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
-          Today
-        </h2>
-        <p className="mt-1 text-sm text-text-dim">
-          <span className="font-mono text-accent">{streak}</span> day streak
+      <div className="flex items-end justify-between gap-3">
+        <div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent/80">
+            {formatLogDate(today)}
+          </p>
+          <h2 className="mt-1 font-display text-2xl font-semibold tracking-tight">
+            {getGreeting(timezone)}
+          </h2>
+        </div>
+        <p
+          className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium tabular-nums ${
+            streak >= 7
+              ? "border-accent/50 bg-accent-dim/30 text-accent"
+              : "border-line/80 bg-surface/70 text-text-dim"
+          }`}
+        >
+          <span className="font-mono text-sm text-accent">{streak}</span>
+          {" day streak"}
         </p>
       </div>
 

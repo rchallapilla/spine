@@ -63,6 +63,10 @@ export function QuickLogBox({ date, timezone }: Props) {
       <Input
         value={text}
         onChange={(e) => setText(e.target.value)}
+        name="quick-log"
+        aria-label="Describe your day"
+        autoComplete="off"
+        enterKeyHint="go"
         placeholder='e.g. "3 walks, did the big 3, back pain 4/10, slept 7.5h"'
         onKeyDown={(e) => e.key === "Enter" && handleParse()}
       />
@@ -72,11 +76,14 @@ export function QuickLogBox({ date, timezone }: Props) {
         onClick={handleParse}
         disabled={loading || !text.trim()}
       >
-        {loading ? "Reading your entry..." : "Log my day"}
+        {loading ? "Reading your entry\u2026" : "Log my day"}
       </Button>
 
       {preview && (
-        <div className="space-y-2 rounded-[12px] border border-accent/30 bg-accent-dim/30 p-3 text-sm">
+        <div
+          aria-live="polite"
+          className="space-y-2 rounded-[12px] border border-accent/30 bg-accent-dim/30 p-3 text-sm"
+        >
           <p className="font-medium text-text">
             Here&apos;s what I understood &mdash; confirm to save:
           </p>

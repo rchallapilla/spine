@@ -43,16 +43,18 @@ export function LoginForm() {
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
+          name="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           required
           autoComplete="email"
+          spellCheck={false}
         />
       </div>
       <Button type="submit" className="w-full" disabled={loading}>
-        {loading ? "Sending link..." : "Send magic link"}
+        {loading ? "Sending link\u2026" : "Send magic link"}
       </Button>
     </form>
   );

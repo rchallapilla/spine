@@ -38,7 +38,7 @@ export function CoachClient({ reports }: { reports: Report[] }) {
   return (
     <div className="space-y-6">
       <Button onClick={handleGenerate} disabled={loading} className="w-full">
-        {loading ? "Generating..." : "Generate now"}
+        {loading ? "Generating\u2026" : "Generate this week's report"}
       </Button>
 
       {!latest ? (

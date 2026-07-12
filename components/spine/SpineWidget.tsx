@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { toggleHabit } from "@/app/actions/logging";
@@ -100,6 +100,21 @@ export function SpineWidget({ habits, entries, date }: Props) {
   const doneCount = habits.filter((h) =>
     isComplete(h, localEntries[h.id]),
   ).length;
+  const allDone = habits.length > 0 && doneCount === habits.length;
+
+  // Fire the alignment sweep only when the last segment fills in this
+  // session, not when the page loads with an already-complete day.
+  const [sweeping, setSweeping] = useState(false);
+  const prevDone = useRef(doneCount);
+  useEffect(() => {
+    const wasOneShort = prevDone.current === habits.length - 1;
+    prevDone.current = doneCount;
+    if (doneCount === habits.length && wasOneShort) {
+      setSweeping(true);
+      const t = setTimeout(() => setSweeping(false), 1200);
+      return () => clearTimeout(t);
+    }
+  }, [doneCount, habits.length]);
 
   return (
     <>
@@ -108,16 +123,30 @@ export function SpineWidget({ habits, entries, date }: Props) {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(ellipse_at_top,rgba(62,207,186,0.12),transparent_70%)]"
         />
+        {sweeping && (
+          <div
+            aria-hidden
+            className="spine-align-sweep pointer-events-none absolute inset-0 z-10"
+          />
+        )}
         <div className="relative mb-3 flex items-end justify-between gap-3">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-text-dim">
               Your spine
             </p>
-            <p className="mt-0.5 text-sm text-text-dim">
-              Tap a segment when done · ⓘ for how-to
+            <p
+              className={cn(
+                "mt-0.5 text-sm",
+                allDone ? "font-medium text-accent" : "text-text-dim",
+              )}
+              aria-live="polite"
+            >
+              {allDone
+                ? "All six done — aligned"
+                : "Tap a segment when done · ⓘ for how-to"}
             </p>
           </div>
-          <p className="font-mono text-sm text-accent">
+          <p className="font-mono text-sm tabular-nums text-accent">
             {doneCount}/{habits.length}
           </p>
         </div>
@@ -183,14 +212,21 @@ export function SpineWidget({ habits, entries, date }: Props) {
             <Button
               variant="secondary"
               size="icon"
+              aria-label="Decrease count"
               onClick={() => setCountValue((v) => Math.max(0, v - 1))}
             >
-              -
+              &minus;
             </Button>
-            <span className="font-display text-3xl">{countValue}</span>
+            <span
+              className="font-display text-3xl tabular-nums"
+              aria-live="polite"
+            >
+              {countValue}
+            </span>
             <Button
               variant="secondary"
               size="icon"
+              aria-label="Increase count"
               onClick={() => setCountValue((v) => v + 1)}
             >
               +
