@@ -34,6 +34,13 @@ ANTHROPIC_API_KEY=<your key from console.anthropic.com>
 CRON_SECRET=<any long random string, e.g. run: openssl rand -hex 32>
 ```
 
+> **Optional — OpenRouter instead of Anthropic:** set `OPENROUTER_API_KEY`
+> (from [openrouter.ai/keys](https://openrouter.ai/keys)) and all LLM calls
+> route through OpenRouter's Anthropic-compatible endpoint. When it's set,
+> `ANTHROPIC_API_KEY` can be left empty. Billing then appears on your
+> OpenRouter dashboard. Recommended: disable prompt logging/training in
+> OpenRouter privacy settings, since coach prompts contain personal context.
+
 Leave the VAPID lines empty for now (Step 6).
 
 ## Step 3: Verify locally (~5 min)
@@ -116,7 +123,7 @@ VAPID_SUBJECT=mailto:<your email>
 |---|---|
 | Magic link goes to an error page | Supabase **URL Configuration**: Site URL + Redirect URLs must match the domain you're using |
 | "This email is not authorized" | The email on the magic link must exactly match `ALLOWED_EMAILS`. Request a **new** magic link using that email (old links keep the original email). If you changed `ALLOWED_EMAILS` after requesting the link, request again. |
-| Quick-log parse fails | Check `ANTHROPIC_API_KEY` is set in Vercel |
+| Quick-log parse fails | Check `ANTHROPIC_API_KEY` (or `OPENROUTER_API_KEY`) is set in Vercel |
 | "Generate now is limited to once per day" | Rate limit working as designed; wait 24h |
 | No push notification | VAPID keys set in Vercel + redeployed? Reminders enabled in app Settings? Notifications allowed for the installed app in Android settings? |
 | Cron didn't run | Vercel dashboard -> your project -> **Cron Jobs** tab shows run history and errors |
